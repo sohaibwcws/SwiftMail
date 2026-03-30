@@ -200,11 +200,18 @@ final class IMAPConnection {
             .channelOption(ChannelOptions.socket(IPPROTO_TCP, TCP_NODELAY), value: 1)
             .channelInitializer { channel in
                 do {
+                    // Cap body/literal sizes to prevent fatal memory allocation crashes
+                    // when the server sends unexpectedly large literals (e.g. inline attachments).
+                    // 50 MB is generous enough for any reasonable email body while preventing
+                    // the parser from attempting multi-GB allocations that abort the process.
+                    let maxBodySize: UInt64 = 50 * 1024 * 1024  // 50 MB
+                    let maxLiteralSize = 50 * 1024 * 1024       // 50 MB
+
                     let parserOptions = ResponseParser.Options(
                         bufferLimit: 1024 * 1024,
                         messageAttributeLimit: .max,
-                        bodySizeLimit: .max,
-                        literalSizeLimit: IMAPDefaults.literalSizeLimit
+                        bodySizeLimit: maxBodySize,
+                        literalSizeLimit: maxLiteralSize
                     )
 
                     if case .implicitTLS = initialTLSMode {
