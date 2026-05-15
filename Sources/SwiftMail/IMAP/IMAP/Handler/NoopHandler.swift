@@ -81,6 +81,8 @@ final class NoopHandler: BaseIMAPCommandHandler<[IMAPServerEvent]>, IMAPCommandH
                 noopLogger.debug("NoopHandler: ignoring unsolicited ESEARCH response")
             case .namespace:
                 noopLogger.debug("NoopHandler: ignoring unsolicited NAMESPACE response")
+            case .sort:
+                noopLogger.debug("NoopHandler: ignoring unsolicited SORT response")
             case .uidBatches:
                 noopLogger.debug("NoopHandler: ignoring unsolicited UIDBATCHES response")
             }

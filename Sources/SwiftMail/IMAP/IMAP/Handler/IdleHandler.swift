@@ -93,6 +93,8 @@ final class IdleHandler: BaseIMAPCommandHandler<Void>, IMAPCommandHandler, @unch
                 idleLogger.debug("IdleHandler: ignoring unsolicited ESEARCH response during IDLE")
             case .namespace:
                 idleLogger.debug("IdleHandler: ignoring unsolicited NAMESPACE response during IDLE")
+            case .sort:
+                idleLogger.debug("IdleHandler: ignoring unsolicited SORT response during IDLE")
             case .uidBatches:
                 idleLogger.debug("IdleHandler: ignoring unsolicited UIDBATCHES response during IDLE")
             }
